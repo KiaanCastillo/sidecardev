@@ -1,0 +1,74 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Mono&display=swap");
+
+.code-panel {
+  overflow: hidden;
+  background-color: #fff;
+  border-radius: 1rem;
+
+  .header {
+    height: 4.5rem;
+    padding: 0 1rem;
+
+    &,
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .actions {
+      gap: 0.5rem;
+    }
+  }
+
+  .editor {
+    font-family: "Space Mono", monospace;
+    width: 100% !important;
+    background-color: var(--color-neutral-black);
+    padding: 1.5rem;
+
+    & > div {
+      background-color: var(--color-neutral-black);
+    }
+  }
+}
+
+.language-select {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-neutral-border);
+  position: relative;
+
+  select {
+    cursor: pointer;
+    height: 2.5rem;
+    padding: 0 3rem 0 1rem;
+    border: none;
+    color: var(--color-neutral-sub-text);
+
+    /* for Firefox */
+    -moz-appearance: none;
+    /* for Chrome */
+    -webkit-appearance: none;
+    z-index: 3;
+    background-color: transparent;
+
+    &:active,
+    &:focus {
+      outline: none;
+      text-decoration: none;
+    }
+  }
+
+  svg {
+    right: 1rem;
+    position: absolute;
+  }
+
+  /* For IE10 */
+  select::-ms-expand {
+    display: none;
+  }
+}

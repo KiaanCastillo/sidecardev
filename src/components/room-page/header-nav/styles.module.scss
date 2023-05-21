@@ -1,9 +1,16 @@
 .header {
   display: flex;
   height: 4rem;
-  padding: 0 1rem;
+  padding: 0 2rem;
   justify-content: space-between;
   align-items: center;
+  max-width: var(--max-width);
+  margin: auto;
+
+  .actions {
+    display: flex;
+    gap: 0.5rem;
+  }
 }
 
 .user-avatar-list {

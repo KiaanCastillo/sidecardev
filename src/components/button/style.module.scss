@@ -10,4 +10,23 @@
   cursor: pointer;
   font-weight: 500;
   gap: 0.5rem;
+  transition: transform 0.15s ease;
+
+  &:hover {
+    transform: translateY(-0.125rem);
+  }
+
+  &:active {
+    transform: translateY(0.125rem);
+  }
+
+  &.secondary {
+    background-color: var(--color-neutral-black);
+    color: var(--color-neutral-white);
+  }
+
+  &.tetriary {
+    background-color: var(--color-neutral-sub-background);
+    color: var(--color-neutral-black);
+  }
 }

@@ -1,19 +1,24 @@
 import { Logo } from "./Logo";
 import { Button } from "../../button";
-import { IconLink } from "../../icon";
+import { IconLink, IconQRCode } from "../../icon";
 
 import styles from "./styles.module.scss";
-console.log(styles);
 
 export const HeaderNav = () => {
   return (
     <header className={styles.header}>
       <Logo />
       <UserAvatarList users={["Monica", "Ross", "Joey"]} />
-      <Button>
-        <IconLink />
-        Copy Link
-      </Button>
+      <div className={styles.actions}>
+        <Button variant="secondary">
+          <IconQRCode />
+          Show QR Code
+        </Button>
+        <Button>
+          <IconLink />
+          Copy Link
+        </Button>
+      </div>
     </header>
   );
 };
