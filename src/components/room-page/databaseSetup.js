@@ -71,7 +71,8 @@ export const generateName = () => {
     if (localStorage?.getItem("sidecar_username"))
     {
         // Name exists
-        return localStorage.getItem("sidevar_username");
+        console.log(localStorage.getItem("sidecar_username"));
+        return localStorage.getItem("sidecar_username");
     }
 
     const name = randomName();
