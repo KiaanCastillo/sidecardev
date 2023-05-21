@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AceEditor from "react-ace";
 import { Button } from "../../button";
 import { IconTidyUp, IconCopy, IconChevronDown } from "../../icon";
@@ -20,11 +20,43 @@ import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-django";
 import "ace-builds/src-noconflict/mode-typescript";
 
+import firebaseConfig from "../databaseReads"
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, onValue} from "firebase/database";
+
+
 import styles from "./style.module.scss";
 
 export const CodePanel = () => {
   const [codeContent, setCodeContent] = useState("");
   const [language, setLanguage] = useState("javascript");
+
+  // const [messageListener, setMessageListener] = useState("");
+
+  // This sets the initial listener for the database code
+  useEffect(() => {
+
+
+
+      console.log(firebaseConfig);
+      
+      const app = initializeApp(firebaseConfig)
+      const db = getDatabase(app);
+
+      const lobbyID = "12345";  
+      const date = "2023-05-21";
+
+      const refDB = ref(db, date + "/" + lobbyID + "/");
+
+      onValue(refDB, (snapshot) => {
+        const data = snapshot.val();
+        console.log(data)
+        setCodeContent(data.code);
+      });
+    
+    // dbListenerGet();
+
+  }, [])
 
   const onChangeCodeContent = async (ev) => {
     setCodeContent(ev);
