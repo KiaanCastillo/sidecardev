@@ -2,7 +2,8 @@ import { Logo } from "./Logo";
 import { Button } from "../../button";
 import { IconLink, IconQRCode } from "../../icon";
 import { ChatGPTUserIcon } from "./chat-gpt-user-icon";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import { QRCodeExample } from "./qr-code-example";
 
 import styles from "./styles.module.scss";
 import { useState } from "react";
@@ -16,7 +17,9 @@ export const HeaderNav = () => {
   return (
     <>
       <header className={styles.header}>
-        <Logo />
+        <Link to="/">
+          <Logo />
+        </Link>
         <div className={styles.actions}>
           <UserAvatarList
             users={["Monica", "Ross", "Rachel", "Phoebe", "Joey", "Chandler"]}
@@ -96,7 +99,7 @@ const QRCodeModal = ({ setShowQRCodeModal }) => {
     >
       <div className={styles.content}>
         <h1>Scan the QR code to join the room</h1>
-        <img alt="QR code image" />
+        <QRCodeExample />
       </div>
     </div>
   );
