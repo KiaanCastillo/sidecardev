@@ -1,6 +1,6 @@
 import { Logo } from "./Logo";
 import { Button } from "../../button";
-import { IconLink, IconQRCode } from "../../icon";
+import { IconLink, IconQRCode, IconMenu, IconSparkle } from "../../icon";
 import { ChatGPTUserIcon } from "./chat-gpt-user-icon";
 import { useParams, Link } from "react-router-dom";
 import { QRCodeExample } from "./qr-code-example";
@@ -8,11 +8,13 @@ import { QRCodeExample } from "./qr-code-example";
 import styles from "./styles.module.scss";
 import { useState } from "react";
 
-export const HeaderNav = () => {
+export const HeaderNav = ({ showChat, setShowChat }) => {
   const [showQRCodeModal, setShowQRCodeModal] = useState(false);
   const { id } = useParams();
 
   const onClickCopyCode = () => navigator.clipboard.writeText(id);
+
+  const onClickToggleChat = () => setShowChat(!showChat);
 
   return (
     <>
@@ -20,10 +22,12 @@ export const HeaderNav = () => {
         <Link to="/">
           <Logo />
         </Link>
+        <label className={styles.menuIcon} htmlFor="menuIconCheckbox">
+          <IconMenu />
+        </label>
+        <input type="checkbox" id="menuIconCheckbox" />
         <div className={styles.actions}>
-          <UserAvatarList
-            users={["Monica", "Ross", "Rachel", "Phoebe", "Joey", "Chandler"]}
-          />
+          <UserAvatarList users={["Frodo", "Sam"]} />
           <Button variant="tetriary" onClick={() => setShowQRCodeModal(true)}>
             <IconQRCode />
             Show QR Code
@@ -31,6 +35,10 @@ export const HeaderNav = () => {
           <Button variant="tetriary" onClick={onClickCopyCode}>
             <IconLink />
             Copy Room Code
+          </Button>
+          <Button onClick={onClickToggleChat} className={styles.toggleChatBtn}>
+            <IconSparkle />
+            Toggle Chat
           </Button>
         </div>
       </header>

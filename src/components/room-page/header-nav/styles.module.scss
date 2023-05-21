@@ -6,10 +6,53 @@
   align-items: center;
   margin: auto;
   width: 100%;
+  position: relative;
 
   .actions {
     display: flex;
     gap: 0.5rem;
+  }
+
+  .menu-icon {
+    display: none;
+    cursor: pointer;
+  }
+
+  & > input[type="checkbox"] {
+    display: none;
+  }
+
+  .toggle-chat-btn {
+    display: none;
+  }
+
+  @media screen and (max-width: 1156px) {
+    padding: 0;
+
+    .menu-icon {
+      display: block;
+    }
+
+    .actions {
+      display: none;
+    }
+
+    .toggle-chat-btn {
+      display: flex;
+    }
+
+    & > input[type="checkbox"]:checked ~ .actions {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      background-color: white;
+      padding: 1rem;
+      border-radius: 0.75rem;
+      right: 1rem;
+      top: 2.5rem;
+      border: 1px solid #f6f7fa;
+      z-index: 100;
+    }
   }
 }
 

@@ -6,6 +6,11 @@ import { getGPTResponse } from "./chatgptSetup";
 
 import styles from "./style.module.scss";
 
+const getIsMobileViewport = () => {
+  const { innerWidth: width, innerHeight: height } = window;
+  return width <= 1156;
+};
+
 export const ChatPanel = ({
   database,
   id,
@@ -17,6 +22,7 @@ export const ChatPanel = ({
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState();
   const [chatGPTResponse, setChatGPTResponse] = useState();
+  const isMobileViewport = getIsMobileViewport();
 
   const onType = (ev) => {
     setInputValue(ev.target.value);
@@ -105,11 +111,11 @@ export const ChatPanel = ({
         <div className={styles.sendActions}>
           <Button variant="secondary" onClick={onClickSendToChat}>
             <IconCheck />
-            Send Chat
+            {!isMobileViewport && "Send Chat"}
           </Button>
           <Button onClick={onClickSendToChatGPT}>
             <IconSparkle />
-            Ask ChatGPT
+            {!isMobileViewport && "Ask ChatGPT"}
           </Button>
         </div>
       </div>

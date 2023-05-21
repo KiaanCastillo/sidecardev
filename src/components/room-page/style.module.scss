@@ -16,4 +16,13 @@
     gap: 1rem;
     height: calc(100vh - 5.5rem);
   }
+
+  @media screen and (max-width: 1156px) {
+    padding: 0 1rem 1rem 1rem;
+
+    main {
+      padding: 0.5rem;
+      grid-template-columns: 1fr;
+    }
+  }
 }
