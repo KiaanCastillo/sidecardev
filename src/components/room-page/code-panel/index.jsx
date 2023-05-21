@@ -23,10 +23,15 @@ import { ref, onValue, set, update } from "firebase/database";
 
 import styles from "./style.module.scss";
 
-export const CodePanel = ({ database, id, date }) => {
-  const [codeContent, setCodeContent] = useState("");
-  const [language, setLanguage] = useState("javascript");
-
+export const CodePanel = ({
+  codeContent,
+  setCodeContent,
+  language,
+  setLanguage,
+  database,
+  id,
+  date,
+}) => {
   // This sets the initial listener for the database code
   useEffect(() => {
     const databaseCodePath = ref(database, date + "/" + id + "/code/");
@@ -51,7 +56,30 @@ export const CodePanel = ({ database, id, date }) => {
   return (
     <div className={styles.codePanel}>
       <header className={styles.header}>
-        <LanguageSelect setLanguage={setLanguage} />
+        <div className={styles.languageSelect}>
+          <select
+            onChange={(ev) => {
+              ev.preventDefault();
+              console.log(ev.target.value);
+              setLanguage(ev.target.value);
+            }}
+          >
+            <option value="html">HTML</option>
+            <option value="xml">XML</option>
+            <option value="css">CSS</option>
+            <option value="sass">Sass</option>
+            <option value="javascript">JavaScript</option>
+            <option value="typescript">TypeScript</option>
+            <option value="python">Python</option>
+            <option value="django">Django</option>
+            <option value="java">Java</option>
+            <option value="kotlin">Kotlin</option>
+            <option value="c_cpp">C/C++</option>
+            <option value="ruby">Ruby</option>
+            <option value="php">PHP</option>
+          </select>
+          <IconChevronDown />
+        </div>
         <div className={styles.actions}>
           <Button variant="tetriary">
             <IconCopy />
@@ -82,35 +110,6 @@ export const CodePanel = ({ database, id, date }) => {
           tabSize: 2,
         }}
       />
-    </div>
-  );
-};
-
-const LanguageSelect = ({ setLanguage }) => {
-  return (
-    <div className={styles.languageSelect}>
-      <select
-        onChange={(ev) => {
-          ev.preventDefault();
-          console.log(ev.target.value);
-          setLanguage(ev.target.value);
-        }}
-      >
-        <option value="html">HTML</option>
-        <option value="xml">XML</option>
-        <option value="css">CSS</option>
-        <option value="sass">Sass</option>
-        <option value="javascript">JavaScript</option>
-        <option value="typescript">TypeScript</option>
-        <option value="python">Python</option>
-        <option value="django">Django</option>
-        <option value="java">Java</option>
-        <option value="kotlin">Kotlin</option>
-        <option value="c_cpp">C/C++</option>
-        <option value="ruby">Ruby</option>
-        <option value="php">PHP</option>
-      </select>
-      <IconChevronDown />
     </div>
   );
 };

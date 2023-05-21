@@ -14,8 +14,12 @@ export const ChatPanel = ({ database, id, date, username }) => {
   };
 
   const onClickSendToChat = (ev) => {
+    if (inputValue === "") {
+      return;
+    }
+
     // Try to update if there is text there. If it doesn't work, replace
-    const message = {'message' : inputValue, 'username' : username};
+    const message = { message: inputValue, username: username };
     push(ref(database, date + "/" + id + "/messages/"), message);
     setInputValue("");
   };
@@ -31,27 +35,30 @@ export const ChatPanel = ({ database, id, date, username }) => {
     // attach listener to the database path
     onValue(databaseCodePath, (snapshot) => {
       const data = snapshot.val();
-      console.log(data);
 
-      let messages = [];        
-      snapshot.forEach(snap => {
-          const messageContent = snap.val().message;
-          const messageAuthor = snap.val().username;
+      let messages = [];
+      snapshot.forEach((snap) => {
+        const messageContent = snap.val().message;
+        const messageAuthor = snap.val().username;
 
-          if (username == messageAuthor){
-            messages.push({content : messageContent, from : "me"})
-          } else if (messageAuthor == "ChatGPT"){
-            messages.push({content : messageContent, author : messageAuthor, from : "ai"})
-          } else {
-            messages.push({content : messageContent, author : messageAuthor, from : "other"})
-          }
-        
+        if (username == messageAuthor) {
+          messages.push({ content: messageContent, from: "me" });
+        } else if (messageAuthor == "ChatGPT") {
+          messages.push({
+            content: messageContent,
+            author: messageAuthor,
+            from: "ai",
+          });
+        } else {
+          messages.push({
+            content: messageContent,
+            author: messageAuthor,
+            from: "other",
+          });
+        }
       });
 
       setMessages(messages);
-
-      // setMessages(messages.reverse()); 
-
     });
   }, []);
 
@@ -60,11 +67,9 @@ export const ChatPanel = ({ database, id, date, username }) => {
       <div className={styles.messageContainer}>
         {console.log(messages)}
         {messages.length > 0 &&
-          messages.map((message, index) => {
-            console.log(message)
-            return <MessageItem key={index} {...message} />
-          })
-        }
+          messages.map((message, index) => (
+            <MessageItem key={index} {...message} />
+          ))}
       </div>
       <div className={styles.inputBox}>
         <input
@@ -89,7 +94,6 @@ export const ChatPanel = ({ database, id, date, username }) => {
 };
 
 const MessageItem = ({ content, author, from }) => {
-  console.log({author})
   return (
     <div className={`${styles.messageItem} ${styles[from]}`}>
       {author && <p className={styles.author}>{author}</p>}
