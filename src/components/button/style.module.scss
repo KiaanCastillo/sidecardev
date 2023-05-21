@@ -31,4 +31,8 @@
     background-color: var(--color-neutral-sub-background);
     color: var(--color-neutral-black);
   }
+
+  &.big {
+    height: 3.5rem;
+  }
 }

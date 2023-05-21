@@ -1,9 +1,9 @@
-import { RoomPage } from "./components";
+import { RoomPage, LandingPage } from "./components";
 
 function App() {
   return (
     <>
-      <RoomPage />
+      <LandingPage />
     </>
   );
 }
