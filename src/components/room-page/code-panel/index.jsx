@@ -19,41 +19,33 @@ import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-django";
 import "ace-builds/src-noconflict/mode-typescript";
 
-import { ref, onValue, set, update} from "firebase/database";
+import { ref, onValue, set, update } from "firebase/database";
 
 import styles from "./style.module.scss";
 
-export const CodePanel = ({database, id, date}) => {
+export const CodePanel = ({ database, id, date }) => {
   const [codeContent, setCodeContent] = useState("");
   const [language, setLanguage] = useState("javascript");
 
   // This sets the initial listener for the database code
   useEffect(() => {
-    const databaseCodePath = ref(database, date + "/" + id + "/code/")
-      // attach listener to the database path
-      onValue(databaseCodePath, (snapshot) => {
-        const data = snapshot.val();
-        console.log(data);
-
-        if (data?.code){
-          setCodeContent(data.code);
-        } else {
-          setCodeContent("");
-        }
-      });
-  
-  }, [])
+    const databaseCodePath = ref(database, date + "/" + id + "/code/");
+    // attach listener to the database path
+    onValue(databaseCodePath, (snapshot) => {
+      const data = snapshot.val();
+      setCodeContent(data);
+    });
+  }, [database, date, id]);
 
   const onChangeCodeContent = async (ev) => {
     setCodeContent(ev);
 
     // Try to update if there is text there. If it doesn't work, replace
     try {
-      update(ref(database, date + "/" + id + "/code/"), ev)
+      update(ref(database, date + "/" + id + "/code/"), ev);
     } catch (error) {
-      set(ref(database, date + "/" + id + "/code/"), ev)
+      set(ref(database, date + "/" + id + "/code/"), ev);
     }
-
   };
 
   return (

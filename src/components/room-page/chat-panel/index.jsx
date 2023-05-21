@@ -1,112 +1,73 @@
 import { useState, useEffect } from "react";
 import { Button } from "../../button";
 import { IconSparkle, IconCheck } from "../../icon";
-import { ref, onValue, set, update} from "firebase/database";
+import { ref, onValue, set, update } from "firebase/database";
 
 import styles from "./style.module.scss";
 
-export const ChatPanel = ({database, id, date, username}) => {
-  const [messages, setMessages] = useState([
-    {
-      content:
-        "Hi, I’m ChatGPT, your AI assistant. Ask me anything about your code.",
-      author: "ChatGPT",
-      from: "ai",
-    },
-    {
-      content: "Thanks I’ll ask you if I need anything later",
-      author: "Famous Dino",
-      from: "other",
-    },
-    {
-      content: "Let's work on this together!",
+export const ChatPanel = ({ database, id, date, username }) => {
+  const [messages, setMessages] = useState([]);
+  const [inputValue, setInputValue] = useState();
 
-      from: "me",
-    },
-    {
-      content:
-        "Hi, I’m ChatGPT, your AI assistant. Ask me anything about your code.",
-      author: "ChatGPT",
-      from: "ai",
-    },
-    {
-      content: "Thanks I’ll ask you if I need anything later",
-      author: "Famous Dino",
-      from: "other",
-    },
-    {
-      content: "Let's work on this together!",
+  const onType = (ev) => {
+    setInputValue(ev.target.value);
+  };
 
-      from: "me",
-    },
-    {
-      content:
-        "Hi, I’m ChatGPT, your AI assistant. Ask me anything about your code.",
-      author: "ChatGPT",
-      from: "ai",
-    },
-    {
-      content: "Thanks I’ll ask you if I need anything later",
-      author: "Famous Dino",
-      from: "other",
-    },
-    {
-      content: "Let's work on this together!",
+  const onClickSendToChat = async (ev) => {
+    // Try to update if there is text there. If it doesn't work, replace
+    console.log(ev.target.value);
+    try {
+      update(ref(database, date + "/" + id + "/messages/"), ev.target.value);
+    } catch (error) {
+      set(ref(database, date + "/" + id + "/messages/"), ev.target.value);
+    }
 
-      from: "me",
-    },
-    {
-      content:
-        "Hi, I’m ChatGPT, your AI assistant. Ask me anything about your code.",
-      author: "ChatGPT",
-      from: "ai",
-    },
-    {
-      content: "Thanks I’ll ask you if I need anything later",
-      author: "Famous Dino",
-      from: "other",
-    },
-    {
-      content: "Let's work on this together!",
+    setInputValue("");
+  };
 
-      from: "me",
-    },
-  ]);
+  const onClickSendToChatGPT = (ev) => {
+    console.log(inputValue);
+  };
 
   // This sets the initial listener for the database code
   useEffect(() => {
- 
-    const databaseCodePath = ref(database, date + "/" + id + "/messages/")
+    const databaseCodePath = ref(database, date + "/" + id + "/messages/");
 
-      // attach listener to the database path
-      onValue(databaseCodePath, (snapshot) => {
-        const data = snapshot.val();
-        console.log(data);
+    // attach listener to the database path
+    onValue(databaseCodePath, (snapshot) => {
+      const data = snapshot.val();
+      console.log(data);
 
-        // if (data.child){
-        //   setCodeContent(data.code);
-        // } else {
-        //   setCodeContent("");
-        // }
-      });
-  
-  }, [])
+      // if (data.child){
+      //   setCodeContent(data.code);
+      // } else {
+      //   setCodeContent("");
+      // }
+    });
+  }, []);
 
   return (
     <div className={styles.chatPanel}>
       <div className={styles.messageContainer}>
-        {messages.map((message, index) => (
-          <MessageItem key={index} {...message} />
-        ))}
+        {console.log(messages)}
+        {messages.length > 0 &&
+          messages.map((message, index) => (
+            <MessageItem key={index} {...message} />
+          ))}
       </div>
       <div className={styles.inputBox}>
-        <input type="text" placeholder="Help me write a function to..." />
+        <input
+          type="text"
+          value={inputValue}
+          placeholder="Help me write a function to..."
+          onChange={onType}
+        />
         <div className={styles.sendActions}>
-          <Button variant="secondary">
+          <Button variant="secondary" onClick={onClickSendToChat}>
             <IconCheck />
             Send Chat
           </Button>
-          <Button>
+          <Button onClick={onClickSendToChatGPT}>
             <IconSparkle />
             Ask ChatGPT
           </Button>
