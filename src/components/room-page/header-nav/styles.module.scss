@@ -16,18 +16,53 @@
 .user-avatar-list {
   display: flex;
 
-  .avatar + .avatar {
+  & > * + * {
     margin-left: -0.5rem;
   }
 
-  .avatar {
+  .avatar-container {
+    position: relative;
+
+    .avatar {
+      display: grid;
+      place-items: center;
+      background-color: #bfdfff;
+      color: #005cb8;
+      border-radius: 4rem;
+      border: 2px solid white;
+      height: 2.5rem;
+      width: 2.5rem;
+    }
+  }
+
+  .chat-gpt-user-avatar {
+    z-index: 10;
     display: grid;
     place-items: center;
-    background-color: #bfdfff;
-    color: #005cb8;
+    background-color: #74aa9c;
     border-radius: 4rem;
     border: 2px solid white;
     height: 2.5rem;
     width: 2.5rem;
   }
+}
+
+.tool-tip {
+  position: absolute;
+  display: none;
+  padding: 0.25rem 0.75rem;
+  background-color: var(--color-neutral-black);
+  color: #fff;
+  font-size: 0.75rem;
+  border-radius: 0.25rem;
+
+  &.show-tool-tip {
+    display: block;
+    right: 50%;
+    transform: translateX(50%);
+  }
+}
+
+.chat-gpt-user-avatar .tool-tip {
+  bottom: -1.75rem;
 }
