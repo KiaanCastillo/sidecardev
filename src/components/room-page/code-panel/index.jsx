@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import AceEditor from "react-ace";
 import { Button } from "../../button";
 import { IconTidyUp, IconCopy, IconChevronDown } from "../../icon";
-import axios from "axios";
 import "ace-builds/src-noconflict/theme-chaos";
 import "ace-builds/src-noconflict/ext-language_tools";
 import "ace-builds/src-noconflict/ext-beautify";
@@ -20,65 +19,41 @@ import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-django";
 import "ace-builds/src-noconflict/mode-typescript";
 
-import firebaseConfig from "../databaseReads"
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, onValue} from "firebase/database";
-
+import { ref, onValue, set, update} from "firebase/database";
 
 import styles from "./style.module.scss";
 
-export const CodePanel = () => {
+export const CodePanel = ({database, id, date}) => {
   const [codeContent, setCodeContent] = useState("");
   const [language, setLanguage] = useState("javascript");
 
-  // const [messageListener, setMessageListener] = useState("");
-
   // This sets the initial listener for the database code
   useEffect(() => {
-
-
-
-      console.log(firebaseConfig);
-      
-      const app = initializeApp(firebaseConfig)
-      const db = getDatabase(app);
-
-      const lobbyID = "12345";  
-      const date = "2023-05-21";
-
-      const refDB = ref(db, date + "/" + lobbyID + "/");
-
-      onValue(refDB, (snapshot) => {
+    const databaseCodePath = ref(database, date + "/" + id + "/code/")
+      // attach listener to the database path
+      onValue(databaseCodePath, (snapshot) => {
         const data = snapshot.val();
-        console.log(data)
-        setCodeContent(data.code);
-      });
-    
-    // dbListenerGet();
+        console.log(data);
 
+        if (data?.code){
+          setCodeContent(data.code);
+        } else {
+          setCodeContent("");
+        }
+      });
+  
   }, [])
 
   const onChangeCodeContent = async (ev) => {
     setCodeContent(ev);
 
-    axios
-      .post(
-        `https://stormhacks2023-backend.onrender.com/firebase/databasePost?username=Kiaan&lobbyID=12345&postType=code`,
-        { data: ev },
-        {
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((res) => console.log(res));
+    // Try to update if there is text there. If it doesn't work, replace
+    try {
+      update(ref(database, date + "/" + id + "/code/"), ev)
+    } catch (error) {
+      set(ref(database, date + "/" + id + "/code/"), ev)
+    }
 
-    // const response = await fetch(
-    //   `http://https://stormhacks2023-backend.onrender.com/firebase/databasePost?username=Kiaan&message=${codeContent}`
-    // );
-    // const jsonData = await response.json();
-    // console.log(jsonData);
   };
 
   return (

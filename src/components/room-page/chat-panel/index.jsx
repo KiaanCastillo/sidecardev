@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "../../button";
 import { IconSparkle, IconCheck } from "../../icon";
+import { ref, onValue, set, update} from "firebase/database";
 
 import styles from "./style.module.scss";
 
-export const ChatPanel = () => {
+export const ChatPanel = ({database, id, date, username}) => {
   const [messages, setMessages] = useState([
     {
       content:
@@ -71,6 +72,25 @@ export const ChatPanel = () => {
       from: "me",
     },
   ]);
+
+  // This sets the initial listener for the database code
+  useEffect(() => {
+ 
+    const databaseCodePath = ref(database, date + "/" + id + "/messages/")
+
+      // attach listener to the database path
+      onValue(databaseCodePath, (snapshot) => {
+        const data = snapshot.val();
+        console.log(data);
+
+        // if (data.child){
+        //   setCodeContent(data.code);
+        // } else {
+        //   setCodeContent("");
+        // }
+      });
+  
+  }, [])
 
   return (
     <div className={styles.chatPanel}>
