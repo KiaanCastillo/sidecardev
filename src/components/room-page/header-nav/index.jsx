@@ -14,11 +14,11 @@ export const HeaderNav = () => {
         <UserAvatarList
           users={["Monica", "Ross", "Rachel", "Phoebe", "Joey", "Chandler"]}
         />
-        <Button variant="secondary">
+        <Button variant="tetriary">
           <IconQRCode />
           Show QR Code
         </Button>
-        <Button>
+        <Button variant="tetriary">
           <IconLink />
           Copy Link
         </Button>
