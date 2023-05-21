@@ -3,7 +3,7 @@ import { Button } from "../../button";
 import { IconLink, IconQRCode, IconMenu, IconSparkle } from "../../icon";
 import { ChatGPTUserIcon } from "./chat-gpt-user-icon";
 import { useParams, Link } from "react-router-dom";
-import { QRCodeExample } from "./qr-code-example";
+import QRCodePNG from "./qr-code.png";
 
 import styles from "./styles.module.scss";
 import { useState } from "react";
@@ -107,7 +107,7 @@ const QRCodeModal = ({ setShowQRCodeModal }) => {
     >
       <div className={styles.content}>
         <h1>Scan the QR code to join the room</h1>
-        <QRCodeExample />
+        <img src={QRCodePNG} alt="QR Code" />
       </div>
     </div>
   );
