@@ -20,43 +20,58 @@ import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-django";
 import "ace-builds/src-noconflict/mode-typescript";
 
-import firebaseConfig from "../databaseReads"
+import firebaseConfig from "../databaseReads";
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, onValue} from "firebase/database";
-
+import { getDatabase, ref, onValue } from "firebase/database";
 
 import styles from "./style.module.scss";
 
 export const CodePanel = () => {
-  const [codeContent, setCodeContent] = useState("");
+  const [codeContent, setCodeContent] = useState(`
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Portfolio</title>
+      </head>
+
+      <body>
+        <main>
+          <h1>StormHacks 2023</h>
+          <p>Welcome to Sidecar.dev</p>  
+        </main>
+      </body>
+    </html>
+  `);
   const [language, setLanguage] = useState("javascript");
 
   // const [messageListener, setMessageListener] = useState("");
 
   // This sets the initial listener for the database code
   useEffect(() => {
+    console.log(firebaseConfig);
 
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
+    const lobbyID = "12345";
+    const date = "2023-05-21";
 
-      console.log(firebaseConfig);
-      
-      const app = initializeApp(firebaseConfig)
-      const db = getDatabase(app);
+    const refDB = ref(db, date + "/" + lobbyID + "/");
 
-      const lobbyID = "12345";  
-      const date = "2023-05-21";
+    return onValue(refDB, (snapshot) => {
+      const data = snapshot.val();
 
-      const refDB = ref(db, date + "/" + lobbyID + "/");
-
-      onValue(refDB, (snapshot) => {
-        const data = snapshot.val();
-        console.log(data)
+      if (snapshot.exists()) {
+        console.log(data);
         setCodeContent(data.code);
-      });
-    
-    // dbListenerGet();
+      }
+    });
 
-  }, [])
+    // dbListenerGet();
+  }, []);
 
   const onChangeCodeContent = async (ev) => {
     setCodeContent(ev);
