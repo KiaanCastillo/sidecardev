@@ -69,6 +69,10 @@
     color: var(--color-neutral-black);
   }
 
+  & > button {
+    margin-top: 0.5rem;
+  }
+
   &.ai .content {
     background-color: var(--color-primary-light);
     color: var(--color-primary-dark);

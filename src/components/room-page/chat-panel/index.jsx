@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "../../button";
-import { IconSparkle, IconCheck } from "../../icon";
+import { IconSparkle, IconCheck, IconCopy } from "../../icon";
 import { ref, onValue, push } from "firebase/database";
 import { getGPTResponse } from "./chatgptSetup";
 
@@ -23,6 +23,7 @@ export const ChatPanel = ({
   const [inputValue, setInputValue] = useState();
   const [chatGPTResponse, setChatGPTResponse] = useState();
   const isMobileViewport = getIsMobileViewport();
+  const messagesEndRef = useRef(null);
 
   const onType = (ev) => {
     setInputValue(ev.target.value);
@@ -93,6 +94,24 @@ export const ChatPanel = ({
     });
   }, []);
 
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      if (event.metaKey) {
+        onClickSendToChatGPT();
+      } else {
+        onClickSendToChat();
+      }
+    }
+  };
+
   return (
     <div className={styles.chatPanel}>
       <div className={styles.messageContainer}>
@@ -100,6 +119,7 @@ export const ChatPanel = ({
           messages.map((message, index) => (
             <MessageItem key={index} {...message} />
           ))}
+        <div ref={messagesEndRef} />
       </div>
       <div className={styles.inputBox}>
         <input
@@ -107,6 +127,7 @@ export const ChatPanel = ({
           value={inputValue}
           placeholder="Help me write a function to..."
           onChange={onType}
+          onKeyDown={handleKeyDown}
         />
         <div className={styles.sendActions}>
           <Button variant="secondary" onClick={onClickSendToChat}>
@@ -124,6 +145,8 @@ export const ChatPanel = ({
 };
 
 const MessageItem = ({ content, author, from }) => {
+  const onClickCopy = () => navigator.clipboard.writeText(content);
+
   return (
     <div className={`${styles.messageItem} ${styles[from]}`}>
       {author && <p className={styles.author}>{author}</p>}
@@ -131,6 +154,12 @@ const MessageItem = ({ content, author, from }) => {
         {from === "ai" && <IconSparkle />}
         <p className={styles.text}>{content}</p>
       </div>
+      {from === "ai" && (
+        <Button variant="tetriary" onClick={onClickCopy}>
+          <IconCopy />
+          Copy
+        </Button>
+      )}
     </div>
   );
 };
