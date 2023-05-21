@@ -1,13 +1,19 @@
-import { RoomPage } from "./components";
-import { BrowserRouter as Router, Route, Routes, Navigate} from "react-router-dom";
+import { RoomPage, LandingPage } from "./components";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/room/:id" element={<RoomPage/>}/>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/room/:id" element={<RoomPage />} />
       </Routes>
-  </Router>
+    </Router>
   );
 }
 

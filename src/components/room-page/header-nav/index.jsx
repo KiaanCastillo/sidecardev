@@ -2,12 +2,16 @@ import { Logo } from "./Logo";
 import { Button } from "../../button";
 import { IconLink, IconQRCode } from "../../icon";
 import { ChatGPTUserIcon } from "./chat-gpt-user-icon";
+import { useParams } from "react-router-dom";
 
 import styles from "./styles.module.scss";
 import { useState } from "react";
 
 export const HeaderNav = () => {
   const [showQRCodeModal, setShowQRCodeModal] = useState(false);
+  const { id } = useParams();
+
+  const onClickCopyCode = () => navigator.clipboard.writeText(id);
 
   return (
     <>
@@ -21,9 +25,9 @@ export const HeaderNav = () => {
             <IconQRCode />
             Show QR Code
           </Button>
-          <Button variant="tetriary">
+          <Button variant="tetriary" onClick={onClickCopyCode}>
             <IconLink />
-            Copy Link
+            Copy Room Code
           </Button>
         </div>
       </header>

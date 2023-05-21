@@ -50,6 +50,7 @@ export const ChatPanel = ({
       username: "ChatGPT",
       from: "ai",
     });
+    setInputValue("");
   };
 
   // This sets the initial listener for the database code

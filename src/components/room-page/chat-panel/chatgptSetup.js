@@ -15,9 +15,8 @@ export function setPersona(phrase) {
 }
 
 function createPrompt(message, codeText, codeLang) {
-  let prompt =
-    `For the following code in ${codeLang}: \`\`\`${codeText}\`\`\`` +
-    `Answer the question: ${message}`;
+  let prompt = `${message}.
+    If applicable, here is some code for context written in ${codeLang}: \`\`\`${codeText}\`\`\``;
 
   if (persona.length > 0) {
     prompt = `Please assume the persona of ${persona}` + prompt;
@@ -37,7 +36,7 @@ export const getGPTResponse = async (
   const response = await openai.createCompletion({
     model: "text-davinci-003",
     prompt: prompt,
-    max_tokens: 2000,
+    max_tokens: 500,
   });
 
   if (response.data.choices) {

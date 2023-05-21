@@ -53,6 +53,8 @@ export const CodePanel = ({
     }
   };
 
+  const onClickCopyCode = () => navigator.clipboard.writeText(codeContent);
+
   return (
     <div className={styles.codePanel}>
       <header className={styles.header}>
@@ -80,7 +82,7 @@ export const CodePanel = ({
           <IconChevronDown />
         </div>
         <div className={styles.actions}>
-          <Button variant="tetriary">
+          <Button variant="tetriary" onClick={onClickCopyCode}>
             <IconCopy />
             Copy
           </Button>
