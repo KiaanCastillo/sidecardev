@@ -26,12 +26,14 @@
     .avatar {
       display: grid;
       place-items: center;
-      background-color: #bfdfff;
+      background-color: #e2f0ff;
       color: #005cb8;
       border-radius: 4rem;
       border: 2px solid white;
       height: 2.5rem;
       width: 2.5rem;
+      font-weight: 500;
+      font-family: "Space Mono", monospace;
     }
   }
 
