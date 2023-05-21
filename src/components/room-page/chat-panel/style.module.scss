@@ -63,7 +63,7 @@
     display: flex;
     gap: 0.75rem;
     background-color: var(--color-neutral-sub-background);
-    max-width: 75%;
+    max-width: 100%;
     padding: 1rem;
     border-radius: 0.75rem;
     color: var(--color-neutral-black);
@@ -72,9 +72,16 @@
   &.ai .content {
     background-color: var(--color-primary-light);
     color: var(--color-primary-dark);
+    display: grid;
+    grid-template-columns: 1rem 1fr;
 
-    svg path {
-      fill: var(--color-primary-dark);
+    svg {
+      height: 1rem;
+      width: 1rem;
+
+      path {
+        fill: var(--color-primary-dark);
+      }
     }
   }
 

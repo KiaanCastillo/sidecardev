@@ -2,30 +2,54 @@ import { useState, useEffect } from "react";
 import { Button } from "../../button";
 import { IconSparkle, IconCheck } from "../../icon";
 import { ref, onValue, push } from "firebase/database";
+import { getGPTResponse } from "./chatgptSetup";
 
 import styles from "./style.module.scss";
 
-export const ChatPanel = ({ database, id, date, username }) => {
+export const ChatPanel = ({
+  database,
+  id,
+  date,
+  username,
+  codeContent,
+  language,
+}) => {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState();
+  const [chatGPTResponse, setChatGPTResponse] = useState();
 
   const onType = (ev) => {
     setInputValue(ev.target.value);
   };
 
-  const onClickSendToChat = (ev) => {
+  const onClickSendToChat = () => {
     if (inputValue === "") {
       return;
     }
 
     // Try to update if there is text there. If it doesn't work, replace
-    const message = { message: inputValue, username: username };
+    const message = { message: inputValue, username };
     push(ref(database, date + "/" + id + "/messages/"), message);
     setInputValue("");
   };
 
-  const onClickSendToChatGPT = (ev) => {
-    console.log(inputValue);
+  const onClickSendToChatGPT = async () => {
+    const response = await getGPTResponse(
+      inputValue,
+      codeContent,
+      language,
+      setChatGPTResponse
+    );
+
+    push(ref(database, date + "/" + id + "/messages/"), {
+      message: inputValue,
+      username,
+    });
+    push(ref(database, date + "/" + id + "/messages/"), {
+      message: response,
+      username: "ChatGPT",
+      from: "ai",
+    });
   };
 
   // This sets the initial listener for the database code
@@ -65,7 +89,6 @@ export const ChatPanel = ({ database, id, date, username }) => {
   return (
     <div className={styles.chatPanel}>
       <div className={styles.messageContainer}>
-        {console.log(messages)}
         {messages.length > 0 &&
           messages.map((message, index) => (
             <MessageItem key={index} {...message} />

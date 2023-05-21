@@ -60,7 +60,6 @@ export const CodePanel = ({
           <select
             onChange={(ev) => {
               ev.preventDefault();
-              console.log(ev.target.value);
               setLanguage(ev.target.value);
             }}
           >
