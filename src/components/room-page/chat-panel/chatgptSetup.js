@@ -1,6 +1,6 @@
 // import { Configuration, OpenAIApi } from "openai";
 
-import axios from 'axios';
+import axios from "axios";
 
 // const configuration = new Configuration({
 //   apiKey: import.meta.env.VITE_OPENAI_API_KEY,
@@ -49,10 +49,24 @@ import axios from 'axios';
 //   }
 // };
 
-export const getGPTResponse = async (message, codeText, codeLang, setResponse) => {
-    // const prompt = createPrompt(message, codeText, codeLang);
-    const response = await axios.get('https://stormhacks2023-backend.onrender.com/chatgpt/getGPTResponse', { params: {msg: message, codeTxt: codeText, codeLng: codeLang, setRespnse : setResponse} });
+export const getGPTResponse = async (
+  message,
+  codeText,
+  codeLang,
+  setResponse
+) => {
+  // const prompt = createPrompt(message, codeText, codeLang);
+  const response = await axios.get(
+    "https://stormhacks2023-backend.onrender.com/chatgpt/getGPTResponse",
+    {
+      params: {
+        msg: message,
+        codeTxt: codeText,
+        codeLng: codeLang,
+        setRespnse: setResponse,
+      },
+    }
+  );
 
-    console.log(response);
-    return response.data;
-}
+  return response.data;
+};

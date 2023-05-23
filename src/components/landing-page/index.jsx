@@ -22,7 +22,16 @@ export const LandingPage = () => {
   };
 
   const onClickJoinRoom = () => {
+    if (codeInput.trim() === "") {
+      return;
+    }
     navigate(`/room/${codeInput}`);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      onClickJoinRoom();
+    }
   };
 
   return (
@@ -43,6 +52,7 @@ export const LandingPage = () => {
             placeholder="Enter code"
             value={codeInput}
             onChange={(ev) => setCodeInput(ev.target.value)}
+            onKeyDown={handleKeyDown}
           />
           <Button variant="secondary" onClick={onClickJoinRoom}>
             <IconCheck />

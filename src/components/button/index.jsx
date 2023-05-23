@@ -7,7 +7,6 @@ export const Button = ({
   className,
   ...props
 }) => {
-  console.log(className);
   return (
     <button
       className={`${styles.btn} ${styles[variant]} ${styles[size]} ${className}`}
