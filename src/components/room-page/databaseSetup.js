@@ -1,20 +1,21 @@
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, onValue, set, update } from "firebase/database";
+import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBvfOpgYeasmMuFl_cNFf8NZUhZ6yBsD3Q",
-  authDomain: "sidecar-402a5.firebaseapp.com",
-  databaseURL: "https://sidecar-402a5-default-rtdb.firebaseio.com",
-  projectId: "sidecar-402a5",
-  storageBucket: "sidecar-402a5.appspot.com",
-  messagingSenderId: "945779284465",
-  appId: "1:945779284465:web:dec398402a320216cdcc50",
-  measurementId: "G-NZS4NHGYMH",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
 const createApp = () => {
   return initializeApp(firebaseConfig);
 };
+
 export const createDatabase = () => {
   return getDatabase(createApp());
 };
