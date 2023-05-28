@@ -18,7 +18,8 @@ export const RoomPage = () => {
   const [date, setDate] = useState();
   const [username, setUsername] = useState();
   const [codeContent, setCodeContent] = useState("");
-  const [language, setLanguage] = useState("javascript");
+  // Default option is HTML before it loads. TODO change to find better option to do this
+  const [language, setLanguage] = useState("HTML");
   const [showChat, setShowChat] = useState(true);
   const isMobileViewport = getIsMobileViewport();
 

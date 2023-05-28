@@ -23,6 +23,8 @@ import { ref, onValue, set, update } from "firebase/database";
 
 import styles from "./style.module.scss";
 
+const defaultLanguage = "html";
+
 export const CodePanel = ({
   codeContent,
   setCodeContent,
@@ -32,14 +34,32 @@ export const CodePanel = ({
   id,
   date,
 }) => {
-  // This sets the initial listener for the database code
+  // This sets the initial listener for the database code and sets the initial code language in the lobby
   useEffect(() => {
-    const databaseCodePath = ref(database, date + "/" + id + "/code/");
-    // attach listener to the database path
+    const databaseCodePath = ref(database, date + "/" + id + "/codeEditor/content");
+    const databaseCodeLanguagePath = ref(database, date + "/" + id + "/codeEditor/language/");
+
+    // attach listeners to the code box
     onValue(databaseCodePath, (snapshot) => {
       const data = snapshot.val();
       setCodeContent(data);
     });
+
+    // 
+    onValue(databaseCodeLanguagePath, (snapshot) => {
+      const lang = snapshot.val();
+
+      // if there is no language there to begin with, set it to html
+      if (lang == ""){
+        setLanguage(defaultLanguage);
+      } else {
+        setLanguage(lang);
+        console.log("HERE IT SHOULD CHANGE TO: " + lang);
+      }
+      
+    });
+
+
   }, [database, date, id]);
 
   const onChangeCodeContent = async (ev) => {
@@ -47,11 +67,29 @@ export const CodePanel = ({
 
     // Try to update if there is text there. If it doesn't work, replace
     try {
-      update(ref(database, date + "/" + id + "/code/"), ev);
+      update(ref(database, date + "/" + id + "/codeEditor/content"), ev);
     } catch (error) {
-      set(ref(database, date + "/" + id + "/code/"), ev);
+      set(ref(database, date + "/" + id + "/codeEditor/content"), ev);
     }
   };
+
+  // change the language the coding editor is in
+  const onChangeCodeLanguage = async (ev) => {
+      
+      setLanguage(ev);
+
+      ev.preventDefault();
+      language = ev.target.value;
+
+      console.log("WOOOHOOO");
+
+      // Try to update code language in the editor
+      try {
+        update(ref(database, date + "/" + id + "/codeEditor/language/"), language);
+      } catch (error) {
+        set(ref(database, date + "/" + id + "/codeEditor/language/"), language);
+      }
+  }
 
   const onClickCopyCode = () => navigator.clipboard.writeText(codeContent);
 
@@ -60,10 +98,8 @@ export const CodePanel = ({
       <header className={styles.header}>
         <div className={styles.languageSelect}>
           <select
-            onChange={(ev) => {
-              ev.preventDefault();
-              setLanguage(ev.target.value);
-            }}
+            onChange={onChangeCodeLanguage}
+            value={language}
           >
             <option value="html">HTML</option>
             <option value="xml">XML</option>
